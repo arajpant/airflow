@@ -1,0 +1,12 @@
+apache-airflow-providers-microsoft-azure
+apache-airflow-providers-microsoft-mssql
+apache-airflow-providers-mysql
+azure-storage-file-share
+azure-storage-blob
+google-analytics-data
+google-api-python-client
+oauth2client
+smart_open[azure]
+azure-storage-queue
+python-dotenv
+SQLAlchemy<2.0

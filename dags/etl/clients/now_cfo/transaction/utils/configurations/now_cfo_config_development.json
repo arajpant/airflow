@@ -1,0 +1,32 @@
+{
+  "azure_storage_account_crm_container_configurations": {
+    "container_name": "dataverse-qklycrmprodu-unq6a706f170e034e788203706489ece",
+    "container_folder_name": "Microsoft.Athena.TrickleFeedService"
+  },
+  "sql_credential_source": {
+    "server": "bv-affiliate.database.windows.net",
+    "database": "CatalystBV",
+    "config_sql_source_uid": "DevfinityReader",
+    "config_sql_source_pwd": "D3vf!n!tyReade4%"
+  },
+  "sql_credential": [
+    {
+      "server": "catalystlegal.database.windows.net",
+      "database": "LandingDB",
+      "user_id": "WarehouseAdmin",
+      "password": "CatalystDWAdmin4438&!$"
+    }
+  ],
+  "azure_storage_account_crm_connection_string": {
+    "connection_string": "DefaultEndpointsProtocol=https;AccountName=qklycrmprod;AccountKey=alIB3VbzzPjS3H3YzH8dQ7GCvGN18UaWXe4JAj3v5I6ANhAy6xCRxWHESI8/DdDIiTDZ42nS522V0aXLyAI0fw==;EndpointSuffix=core.windows.net",
+    "transaction_container_name": "transaction"
+  },
+  "SMTPCredential": {
+    "host": "smtp-mail.outlook.com",
+    "port": 587,
+    "sender": "qklydw@outlook.com",
+    "sender_password": "Qkly@12345",
+    "receiver": ["jchapagain@devfinity.io", "apant@devfinity.io"],
+    "report_title": "NOW CFO Pipeline Status Report"
+  }
+}
