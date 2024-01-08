@@ -1,0 +1,4 @@
+"Table Name","Started At","End At","Description","Status","Total Records","Created On","Triggered Medium"
+"account_assigneduser","2023-12-22, 19:29:31 PM","2023-12-22, 19:29:45 PM","Transformation process completed.","Success","61","2023-12-22","MANUAL"
+"account_assigneduser","2023-12-22, 19:30:59 PM","2023-12-22, 19:31:12 PM","Transformation process completed.","Success","61","2023-12-22","MANUAL"
+"account_assigneduser","2023-12-22, 20:00:02 PM","2023-12-22, 20:00:16 PM","Transformation process completed.","Success","61","2023-12-22","SCHEDULED"

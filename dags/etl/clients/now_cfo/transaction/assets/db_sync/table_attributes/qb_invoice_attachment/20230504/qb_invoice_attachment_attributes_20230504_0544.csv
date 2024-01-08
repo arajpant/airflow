@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"qb_invoice_attachment","Id","uniqueidentifier",""
+"qb_invoice_attachment","IsDeleted","bit",""
+"qb_invoice_attachment","QbInvoiceId","uniqueidentifier",""
+"qb_invoice_attachment","FilePath","nvarchar","-1.0"
+"qb_invoice_attachment","FileName","nvarchar","-1.0"
+"qb_invoice_attachment","UploadedDate","datetime2",""
+"qb_invoice_attachment","UploadedUserId","uniqueidentifier",""

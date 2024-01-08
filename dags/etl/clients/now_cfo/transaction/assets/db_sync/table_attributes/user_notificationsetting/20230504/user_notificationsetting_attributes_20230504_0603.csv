@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"user_notificationsetting","Id","uniqueidentifier",""
+"user_notificationsetting","UserId","uniqueidentifier",""
+"user_notificationsetting","NotificationId","uniqueidentifier",""

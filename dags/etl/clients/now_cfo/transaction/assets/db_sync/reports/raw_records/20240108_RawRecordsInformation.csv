@@ -1,0 +1,4 @@
+"Table Name","Started At","End At","Description","Status","Total Records","Created On","Triggered Medium"
+"account_assigneduser","2024-01-08, 20:02:41 PM","2024-01-08, 20:02:49 PM","Failed to extract data from Source Db.","Failed","69","2024-01-08","SCHEDULED"
+"account_assigneduser","2024-01-08, 20:02:41 PM","2024-01-08, 20:04:44 PM","Failed to prepare final CSV file with header and source data.","Failed","69","2024-01-08","SCHEDULED"
+"account_assigneduser","2024-01-08, 20:02:41 PM","2024-01-08, 20:04:44 PM","Failed to prepare final CSV file with header and source data.","Failed","69","2024-01-08","SCHEDULED"

@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"organizationunit_assigneduser","OrganizationUnitId","uniqueidentifier",""
+"organizationunit_assigneduser","AssignedUserId","uniqueidentifier",""
+"organizationunit_assigneduser","Id","uniqueidentifier",""
+"organizationunit_assigneduser","IsDeleted","bit",""
+"organizationunit_assigneduser","AssignedBy","uniqueidentifier",""
+"organizationunit_assigneduser","AssignedById","uniqueidentifier",""
+"organizationunit_assigneduser","IsPrimaryOu","bit",""

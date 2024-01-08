@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_task_status","Id","uniqueidentifier",""
+"project_task_status","Name","nvarchar","50.0"
+"project_task_status","Caption","nvarchar","50.0"
+"project_task_status","IsDeleted","bit",""

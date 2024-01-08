@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"organizationunit_assignedaccount","Id","uniqueidentifier",""
+"organizationunit_assignedaccount","IsDeleted","bit",""
+"organizationunit_assignedaccount","AccountId","uniqueidentifier",""
+"organizationunit_assignedaccount","OuId","uniqueidentifier",""
+"organizationunit_assignedaccount","AssignedDate","datetime2",""

@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_notificationstatus","Id","uniqueidentifier",""
+"project_notificationstatus","Name","nvarchar","50.0"
+"project_notificationstatus","Caption","nvarchar","50.0"

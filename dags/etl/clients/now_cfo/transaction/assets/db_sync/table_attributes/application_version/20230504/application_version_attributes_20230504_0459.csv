@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"application_version","Id","uniqueidentifier",""
+"application_version","Version","nvarchar","-1.0"
+"application_version","Client","int",""
+"application_version","ForceUpdate","bit",""
+"application_version","CreatedAt","datetime2",""
+"application_version","UpdatedAt","datetime2",""

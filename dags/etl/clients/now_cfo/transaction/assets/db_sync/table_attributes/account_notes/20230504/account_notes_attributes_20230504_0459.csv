@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_notes","Id","uniqueidentifier",""
+"account_notes","Notes","nvarchar","-1.0"
+"account_notes","AccountId","uniqueidentifier",""
+"account_notes","UserId","uniqueidentifier",""
+"account_notes","CreatedDate","datetime2",""

@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"permission","Id","uniqueidentifier",""
+"permission","IsDeleted","bit",""
+"permission","Name","nvarchar","50.0"
+"permission","Caption","nvarchar","50.0"
+"permission","Row","int",""

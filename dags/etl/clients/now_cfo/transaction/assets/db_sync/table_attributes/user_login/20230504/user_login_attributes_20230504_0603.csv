@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"user_login","Id","uniqueidentifier",""
+"user_login","IsDeleted","bit",""
+"user_login","UserId","uniqueidentifier",""
+"user_login","IsLogin","bit",""
+"user_login","LoginDate","datetime2",""
+"user_login","LogOutDate","datetime2",""
+"user_login","IpAddress","nvarchar","-1.0"

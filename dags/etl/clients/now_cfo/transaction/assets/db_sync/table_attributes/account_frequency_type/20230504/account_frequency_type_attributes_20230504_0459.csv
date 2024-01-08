@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_frequency_type","Id","uniqueidentifier",""
+"account_frequency_type","IsDeleted","bit",""
+"account_frequency_type","Name","nvarchar","100.0"

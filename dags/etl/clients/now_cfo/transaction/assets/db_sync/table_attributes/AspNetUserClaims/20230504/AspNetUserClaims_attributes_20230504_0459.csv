@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"AspNetUserClaims","Id","int",""
+"AspNetUserClaims","UserId","uniqueidentifier",""
+"AspNetUserClaims","ClaimType","nvarchar","-1.0"
+"AspNetUserClaims","ClaimValue","nvarchar","-1.0"

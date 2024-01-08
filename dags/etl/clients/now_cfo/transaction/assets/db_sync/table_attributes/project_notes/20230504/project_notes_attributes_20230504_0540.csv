@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_notes","Id","uniqueidentifier",""
+"project_notes","Notes","nvarchar","-1.0"
+"project_notes","ProjectId","uniqueidentifier",""
+"project_notes","CreatedDate","datetime2",""
+"project_notes","UpdatedDate","datetime2",""
+"project_notes","CreatedUserId","uniqueidentifier",""
+"project_notes","IsDeleted","bit",""

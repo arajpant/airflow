@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"StrategicObjectiveProjects","StrategicObjectiveId","uniqueidentifier",""
+"StrategicObjectiveProjects","ProjectId","uniqueidentifier",""
+"StrategicObjectiveProjects","Row","int",""

@@ -1,0 +1,5 @@
+"Dag Name","Task Name","Description","Status","Start Date","End Date","Triggered Medium"
+"now_cfo_account_engagement","extraction_group.extraction_error_task","Error Occured in now_cfo_account_engagement","Failed","2023-05-04, 04:43:09 AM","2023-05-04, 04:43:42 AM","scheduled"
+"now_cfo_commission","extraction_group.extraction_error_task","Error Occured in now_cfo_commission","Failed","2023-05-04, 05:02:28 AM","2023-05-04, 05:08:36 AM","scheduled"
+"now_cfo_FolderAuthentications","extraction_group.extraction_error_task","Error Occured in now_cfo_FolderAuthentications","Failed","2023-05-04, 05:11:15 AM","2023-05-04, 05:12:26 AM","manual"
+"now_cfo_group","extraction_group.extraction_error_task","Error Occured in now_cfo_group","Failed","2023-05-04, 05:11:24 AM","2023-05-04, 05:17:27 AM","manual"

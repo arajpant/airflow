@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"RolePermissionModule","Id","uniqueidentifier",""
+"RolePermissionModule","Name","nvarchar","150.0"
+"RolePermissionModule","Priority","int",""
+"RolePermissionModule","Description","nvarchar","-1.0"
+"RolePermissionModule","HasMenu","bit",""

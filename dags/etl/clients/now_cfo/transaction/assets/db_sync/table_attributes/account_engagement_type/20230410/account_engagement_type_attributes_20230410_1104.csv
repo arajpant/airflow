@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_engagement_type","Id","uniqueidentifier",""
+"account_engagement_type","IsDeleted","bit",""
+"account_engagement_type","Name","nvarchar","100.0"

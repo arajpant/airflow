@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"qb_user","Id","uniqueidentifier",""
+"qb_user","IsDeleted","bit",""
+"qb_user","QBCustomerId","nvarchar","-1.0"
+"qb_user","QBAccountId","nvarchar","-1.0"
+"qb_user","AccountId","uniqueidentifier",""
+"qb_user","OrgUnitId","uniqueidentifier",""

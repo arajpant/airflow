@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_status","Id","uniqueidentifier",""
+"account_status","IsDeleted","bit",""
+"account_status","Name","nvarchar","50.0"
+"account_status","Caption","nvarchar","50.0"

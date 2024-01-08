@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"RolePermissionMapping","RoleId","uniqueidentifier",""
+"RolePermissionMapping","RolePermissionId","uniqueidentifier",""
+"RolePermissionMapping","ShowMenu","bit",""
