@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"group_usergroup","Id","uniqueidentifier",""
+"group_usergroup","UserId","uniqueidentifier",""
+"group_usergroup","GroupId","uniqueidentifier",""
+"group_usergroup","IsDeleted","bit",""
+"group_usergroup","PermissionId","uniqueidentifier",""
+"group_usergroup","CreatedDate","datetime2",""

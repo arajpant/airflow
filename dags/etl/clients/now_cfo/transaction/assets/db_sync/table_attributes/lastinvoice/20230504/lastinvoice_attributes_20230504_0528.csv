@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"lastinvoice","Id","uniqueidentifier",""
+"lastinvoice","IsDeleted","bit",""
+"lastinvoice","InvoiceId","uniqueidentifier",""
+"lastinvoice","InvoiceNumber","nvarchar","-1.0"
+"lastinvoice","GeneratedDate","datetime2",""

@@ -1,0 +1,13 @@
+{
+  "sql_credential_source": {
+    "server": "bv-affiliate.database.windows.net",
+    "source_database": "CatalystBV",
+    "source_database_user_id": "DevfinityReader",
+    "source_database_user_password": "D3vf!n!tyReade4%",
+    "source_database_schema_name": "dbo",
+    "destination_raw_record": "raw_records"
+  },
+  "client_information": {
+    "name": "now_cfo"
+  }
+}

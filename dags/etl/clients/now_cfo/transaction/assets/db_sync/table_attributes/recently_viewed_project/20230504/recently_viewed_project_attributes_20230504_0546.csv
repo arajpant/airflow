@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"recently_viewed_project","UserId","uniqueidentifier",""
+"recently_viewed_project","ProjectId","uniqueidentifier",""
+"recently_viewed_project","ViewedDate","datetime2",""

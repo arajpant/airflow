@@ -1,0 +1,2 @@
+This folder consists of different sql procedure,
+function and important queries file.

@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"task_dependent","Id","uniqueidentifier",""
+"task_dependent","IsDeleted","bit",""
+"task_dependent","DependentId","uniqueidentifier",""
+"task_dependent","TaskId","uniqueidentifier",""

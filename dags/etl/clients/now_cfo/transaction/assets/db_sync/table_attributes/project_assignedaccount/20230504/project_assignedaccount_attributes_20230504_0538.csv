@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_assignedaccount","ProjectId","uniqueidentifier",""
+"project_assignedaccount","AssignedGroupId","uniqueidentifier",""
+"project_assignedaccount","AccountId","uniqueidentifier",""
+"project_assignedaccount","DepartmentId","uniqueidentifier",""
+"project_assignedaccount","AssignedBy","uniqueidentifier",""
+"project_assignedaccount","Id","uniqueidentifier",""

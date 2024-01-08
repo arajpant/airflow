@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"category_article","Id","uniqueidentifier",""
+"category_article","CategoryId","uniqueidentifier",""
+"category_article","ArticleId","uniqueidentifier",""

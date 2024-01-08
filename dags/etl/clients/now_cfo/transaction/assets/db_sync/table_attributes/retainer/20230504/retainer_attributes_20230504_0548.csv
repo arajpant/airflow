@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"retainer","Id","uniqueidentifier",""
+"retainer","IsDeleted","bit",""
+"retainer","Amount","decimal",""
+"retainer","Description","nvarchar","-1.0"
+"retainer","PaidBy","nvarchar","100.0"
+"retainer","CreatedDate","datetime2",""

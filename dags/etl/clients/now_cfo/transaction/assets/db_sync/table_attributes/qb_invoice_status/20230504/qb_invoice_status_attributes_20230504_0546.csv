@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"qb_invoice_status","Id","uniqueidentifier",""
+"qb_invoice_status","IsDeleted","bit",""
+"qb_invoice_status","Name","nvarchar","50.0"
+"qb_invoice_status","Caption","nvarchar","50.0"

@@ -1,0 +1,4 @@
+"Table Name","Started At","End At","Description","Status","Total Records","Created On","Triggered Medium"
+"account_assigneduser","2023-12-28, 14:51:25 PM","2023-12-28, 14:51:29 PM","Failed to extract data from Source Db.","Failed","66","2023-12-28","SCHEDULED"
+"account_assigneduser","2023-12-28, 14:51:25 PM","2023-12-28, 14:51:51 PM","Failed to prepare final CSV file with header and source data.","Failed","66","2023-12-28","SCHEDULED"
+"account_assigneduser","2023-12-28, 14:51:25 PM","2023-12-28, 14:52:09 PM","Transformation process completed.","Success","66","2023-12-28","SCHEDULED"

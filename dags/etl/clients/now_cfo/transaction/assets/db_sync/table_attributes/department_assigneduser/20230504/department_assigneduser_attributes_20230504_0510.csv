@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"department_assigneduser","DepartmentId","uniqueidentifier",""
+"department_assigneduser","AssignedUserId","uniqueidentifier",""
+"department_assigneduser","AssignedById","uniqueidentifier",""
+"department_assigneduser","CreatedDate","datetime2",""

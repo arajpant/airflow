@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"AspNetUserLogins","LoginProvider","nvarchar","450.0"
+"AspNetUserLogins","ProviderKey","nvarchar","450.0"
+"AspNetUserLogins","ProviderDisplayName","nvarchar","-1.0"
+"AspNetUserLogins","UserId","uniqueidentifier",""

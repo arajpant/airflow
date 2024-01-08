@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"MultiDayTimers","Id","uniqueidentifier",""
+"MultiDayTimers","TimerId","uniqueidentifier",""
+"MultiDayTimers","StartDate","datetime2",""
+"MultiDayTimers","PauseDate","datetime2",""
+"MultiDayTimers","Hours","int",""
+"MultiDayTimers","Minutes","int",""
+"MultiDayTimers","Seconds","int",""

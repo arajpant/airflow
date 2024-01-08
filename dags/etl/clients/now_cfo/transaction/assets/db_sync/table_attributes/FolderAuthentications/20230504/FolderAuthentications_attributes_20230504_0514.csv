@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"FolderAuthentications","UserId","uniqueidentifier",""
+"FolderAuthentications","GroupId","uniqueidentifier",""
+"FolderAuthentications","IsAuthenticated","bit",""
+"FolderAuthentications","LastAuthenticated","datetime2",""

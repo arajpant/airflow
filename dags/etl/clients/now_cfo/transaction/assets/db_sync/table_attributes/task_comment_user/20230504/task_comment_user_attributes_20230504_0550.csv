@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"task_comment_user","Id","uniqueidentifier",""
+"task_comment_user","IsDeleted","bit",""
+"task_comment_user","TaskId","uniqueidentifier",""
+"task_comment_user","CommentId","uniqueidentifier",""
+"task_comment_user","UserId","uniqueidentifier",""
+"task_comment_user","IsRead","bit",""

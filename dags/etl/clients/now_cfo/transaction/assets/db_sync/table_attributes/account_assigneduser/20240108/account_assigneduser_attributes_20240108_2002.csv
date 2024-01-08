@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_assigneduser","AccountId","uniqueidentifier",""
+"account_assigneduser","AssignedUserId","uniqueidentifier",""
+"account_assigneduser","AssignedById","uniqueidentifier",""
+"account_assigneduser","CreatedDate","datetime2",""
+"account_assigneduser","UpdatedAt","datetime2",""

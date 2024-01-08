@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_assigneduser","ProjectId","uniqueidentifier",""
+"project_assigneduser","AssignedUserId","uniqueidentifier",""
+"project_assigneduser","AssignedBy","uniqueidentifier",""
+"project_assigneduser","PermissionId","uniqueidentifier",""
+"project_assigneduser","AssignedDate","datetime2",""

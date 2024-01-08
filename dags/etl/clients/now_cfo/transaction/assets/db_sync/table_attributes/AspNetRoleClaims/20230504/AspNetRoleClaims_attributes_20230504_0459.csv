@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"AspNetRoleClaims","Id","int",""
+"AspNetRoleClaims","RoleId","uniqueidentifier",""
+"AspNetRoleClaims","ClaimType","nvarchar","-1.0"
+"AspNetRoleClaims","ClaimValue","nvarchar","-1.0"

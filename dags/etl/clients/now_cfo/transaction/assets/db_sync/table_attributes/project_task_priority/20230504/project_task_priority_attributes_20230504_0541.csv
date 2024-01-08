@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_task_priority","Id","uniqueidentifier",""
+"project_task_priority","IsDeleted","bit",""
+"project_task_priority","Name","nvarchar","-1.0"
+"project_task_priority","Caption","nvarchar","-1.0"
+"project_task_priority","Level","int",""

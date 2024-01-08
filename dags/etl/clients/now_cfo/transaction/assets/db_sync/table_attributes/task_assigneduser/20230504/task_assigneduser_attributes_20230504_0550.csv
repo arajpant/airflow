@@ -1,0 +1,7 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"task_assigneduser","Id","uniqueidentifier",""
+"task_assigneduser","IsDeleted","bit",""
+"task_assigneduser","TaskId","uniqueidentifier",""
+"task_assigneduser","AssignedUserId","uniqueidentifier",""
+"task_assigneduser","AssignedByUserId","uniqueidentifier",""
+"task_assigneduser","AssignedDate","datetime2",""

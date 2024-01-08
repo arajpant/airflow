@@ -1,0 +1,78 @@
+site_name: "Airflow Documentation"
+watch: [../../dags]
+
+nav:
+  # defer to gen-files + literate-nav
+  - Code Reference: reference/
+  - Mkdocs-Installation: instruction.md
+  - Airflow-Installation: airflow.md
+theme:
+  name: material
+  custom_dir: overrides
+  logo: logo.png
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+extra_css:
+  - css/material.css
+  - css/mkdocstrings.css
+markdown_extensions:
+  - admonition
+  - callouts:
+      strip_period: no
+  - pymdownx.emoji
+  - pymdownx.magiclink
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - search
+  - markdown-exec
+  - gen-files:
+      scripts:
+        - docs/gen_ref_nav.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - coverage
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [../../dags]
+          import:
+            - https://docs.python.org/3/objects.inv
+            - https://mkdocstrings.github.io/objects.inv
+            - https://mkdocstrings.github.io/griffe/objects.inv
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: yes
+            merge_init_into_class: yes
+            separate_signature: yes
+            show_source: yes
+            show_root_full_path: no
+
+use_directory_urls: false

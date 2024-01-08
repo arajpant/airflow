@@ -1,0 +1,465 @@
+try:
+    from airflow import DAG
+    from airflow.utils.task_group import TaskGroup
+    from airflow.operators.empty import EmptyOperator
+    from airflow.exceptions import AirflowFailException
+    from airflow.operators.python import PythonOperator, ShortCircuitOperator ,BranchPythonOperator
+    from airflow.models.log import Log
+except Exception as ex:
+    print("Error {}".format(ex))
+
+import os,sys
+import pendulum
+from datetime import date
+from dotenv import load_dotenv
+from datetime import timedelta,datetime
+from etl import Business_Access_Layer as q_bal
+load_dotenv()
+
+"""
+Global Variable Defined
+"""
+
+client_name = "{{client_name}}"
+entity_name = "{{entity_name}}"
+source_schema_name="{{source_schema_name}}"
+source_table="{{source_table}}"
+destination_schema_name = "{{destination_schema_name}}"
+raw_information_table = f"{entity_name}_raw_records"
+today_date_only = datetime.now().strftime("%Y%m%d")
+destination_table = f"{entity_name}"
+created_date_column_name="{{created_at_column_name}}"
+updated_date_column_name ="{{updated_at_column_name}}"
+dag_name = f"{client_name}_{entity_name}"
+primary_column=[{{primary_column}}]
+
+triggered_medium = "scheduled"
+is_full_sync = False
+is_error_raised = False
+
+local_tz = pendulum.timezone(os.getenv('AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE'))
+
+current_datetime = datetime.now().strftime('%Y-%m-%d, %H:%M:%S %p')
+   
+
+
+is_production = os.getenv('IS_PRODUCTION')
+
+if(is_production and is_production=="True"):
+    auth_file_name = f"{client_name}_config_production.json"
+else:
+    auth_file_name = f"{client_name}_config_development.json"
+
+
+def model_dictionary_set_variables(**context):
+    today_date = datetime.now().strftime("%Y%m%d_%H%M")
+    destination_table_attributes =f"{source_table}_attributes_{today_date}"
+    date_table = f'{destination_table}_{today_date}'
+    
+    model_dictionary ={
+        "client_name": client_name,
+        "entity_name": entity_name,
+        "source_schema_name":source_schema_name,
+        "source_table":source_table,
+        "destination_schema_name":destination_schema_name,
+        "raw_information_table":raw_information_table,
+        "destination_table":destination_table,
+        "today_date":today_date,
+        "today_date_only": today_date_only,
+        "date_table":date_table,
+        "dag_name":dag_name,
+        "destination_table_attributes":destination_table_attributes,
+        "created_date_column_name": created_date_column_name,
+        "updated_date_column_name": updated_date_column_name,
+        "auth_file_path" : "configurations",
+        "auth_file_name": auth_file_name,
+        "primary_column":primary_column,
+        "dag_status": "Started",
+        "dag_start_at": "",
+        "dag_message": "",
+        "triggered_medium": triggered_medium,
+        "is_full_sync": is_full_sync,
+        "is_error_raised": is_error_raised
+    }
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+    return True
+def extraction_table_columns(**context):
+    """
+      Compute the column extraction from the Source Database
+
+    Args:
+        context (json): grab the arguments from the dag
+
+    Descriptions:
+        1. Connect to the Database server
+        2. Check connection gets successfull or not.
+        3. If successful, get the table information data i.e. entity_name, column_name , data_type, data_type_length.
+        4. Save to the respective local folder with name dagName_attribute_todaydate
+        5. Sync to the able_attribute_todaysDate db table.
+    Returns:
+        return the response of the process. (i.e. {Status: Success or failure})
+    """
+    dag_run = context['dag_run']
+    triggered_medium = dag_run.run_type
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    model_dictionary["triggered_medium"]=triggered_medium
+    extraction_table_columns_status, extraction_process_message= getattr(q_bal(), "extract_table_attributes", \
+                                                                                "default_extract_table_attributes")(model_dictionary)
+    context['ti'].xcom_push(key="extraction_table_columns_status", value=extraction_table_columns_status)
+    context['ti'].xcom_push(key="dag_start_at", value=current_datetime)
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+    print(f"extraction_process_message ---> {extraction_process_message}")
+    return extraction_table_columns_status
+   
+
+def db_table_extraction(**context):
+    """
+      Compute the extraction from the Source Database table
+
+    Args:
+        context (json): grab the arguments from the dag
+
+    Descriptions:
+        1. Connect to the Database server
+        2. Check connection gets successfull or not.
+        3. If successful, go to the respective table or view.
+        4. Extract the data based on today's date
+        5. Save to the respective local folder with name dagName_todayDate
+    Returns:
+        return the response of the process. (i.e. {Status: Success or failure})
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    db_table_extraction_status,_= getattr(q_bal(), "db_sync_source_to_csv",\
+                                                                    "default_db_sync_source_to_csv")(model_dictionary)
+    context['ti'].xcom_push(key="db_table_extraction_status", value=db_table_extraction_status)
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+    return db_table_extraction_status
+
+def check_status_extraction_tasks(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the extraction_table_columns status
+        2. Get the db_table_extraction status
+        3. call next dag based on the status.
+    Returns:
+        next dag (dag). return the next dag.
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    db_table_extraction_status = context['ti'].xcom_pull(key="db_table_extraction_status")
+    extraction_table_columns_status = context['ti'].xcom_pull(key="extraction_table_columns_status")
+    if(db_table_extraction_status and extraction_table_columns_status):
+        context['ti'].xcom_push(key="check_status_extraction_tasks", value=True)
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+        return "extraction_group.csv_to_date_table_task"
+    else:
+        dag_message = "Failed to extract data from Source Db."
+        model_dictionary["dag_message"] = context['ti'].xcom_push(key="dag_message", value=dag_message)
+        model_dictionary["is_error_raised"] = True
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+        context['ti'].xcom_push(key="check_status_extraction_tasks", value=False)
+        return 'extraction_group.extraction_error_task'
+
+
+def csv_to_date_table(**context):
+    """
+      Compute the transformation Process in destination db
+
+    Args:
+        context (json): grab the arguments from the dag
+
+    Descriptions:
+        1. Connect to the destination Database server
+        2. Check connection gets successfull or not.
+        3. If successful,.
+        4. compute the transformation.
+        5. Save to the respective local folder with name dagName_todayDate
+    Returns:
+        return the response of the process. (i.e. {Status: Success or failure})
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    csv_to_date_table_status,_= getattr(q_bal(), \
+        "csv_to_date_table", \
+        "default_csv_to_date_table")(model_dictionary)
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+    context['ti'].xcom_push(key="csv_to_date_table_tasks", value=csv_to_date_table_status)
+    return True
+
+def extraction_status_process(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the csv_to_date_table status
+        2. Get the check_status_extraction_tasks status
+        3. call next dag based on the status.
+    Returns:
+        next dag (dag). return the next dag.
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    csv_to_date_table_tasks = context['ti'].xcom_pull(key="csv_to_date_table_tasks")
+    check_status_extraction_tasks = context['ti'].xcom_pull(key="check_status_extraction_tasks")
+    print(f'check_status_extraction_tasks ----. {check_status_extraction_tasks}')
+    if(csv_to_date_table_tasks and check_status_extraction_tasks):
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+        return "transformation_and_loading_group.transformation_task"
+    else:
+        dag_message = "Failed to prepare final CSV file with header and source data."
+        model_dictionary["dag_message"] = context['ti'].xcom_push(key="dag_message", value=dag_message)    
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+        return "error_task" 
+
+
+def error_log_process(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the previous task status
+        3. Raise exception based on the status.
+    Returns:
+        Exception (string). rasise Airflow exception.
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    model_dictionary["dag_start_at"] = context['ti'].xcom_pull(key="dag_start_at")
+    model_dictionary["dag_message"] = context['ti'].xcom_pull(key="dag_message")
+    model_dictionary["dag_status"] = "Failed"
+    raw_records_information = getattr(q_bal(), \
+        "raw_records_information", \
+        "default_raw_records_information")(model_dictionary)
+    context['ti'].xcom_push(key="error_log_process_status", value=False)
+    if model_dictionary["is_error_raised"]:
+        getattr(q_bal(),"error")(model_dictionary) 
+        model_dictionary["is_error_raised"] = False
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary) 
+    raise AirflowFailException("error rises")
+
+
+def transformation_process(**context):
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    transformation_status = getattr(q_bal(), \
+        "destination_db_transformation_process", \
+        "default_destination_db_transformation_process")(model_dictionary)
+    context['ti'].xcom_push(key='transformation_process_status', value=False)
+    if transformation_status:
+        context['ti'].xcom_push(key="transformation_process_status", value=True)
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+        return 'transformation_and_loading_group.entity_information_save'
+    else:
+        context['ti'].xcom_push(key="transformation_process_status", value=False)
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+        return 'transformation_and_loading_group.transformation_error_task'
+
+
+def entity_information_to_db(**context):
+    """
+      Save the attribute file to the db.
+
+    Args:
+        context (json): grab the arguments from the dag
+
+    Descriptions:
+        1. Connect to the database.
+        2. Check connection gets successfull or not.
+        3. If successful, bulk upload to the Entity Information and the Entity Column Info.
+    Returns:
+        return the response of the process. (i.e. {Status: Success or failure})
+    """
+    
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    entity_info_sync_db = getattr(q_bal(), \
+        "entity_info_sync_db", \
+        "default_entity_info_sync_db")(model_dictionary)
+    context['ti'].xcom_push(key="entity_information_to_db_status", value=entity_info_sync_db)
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+    return entity_info_sync_db
+
+def transformation_process_status_process(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the entity_information_to_db status
+        2. Get the transformation_process status
+        3. call next dag based on the status.
+    Returns:
+        next dag (dag). return the next dag.
+    """
+    
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    entity_information_to_db_status = context['ti'].xcom_pull(key="entity_information_to_db_status")
+    transformation_process_status = context['ti'].xcom_pull(key='transformation_process_status')
+    print(f"Transformation status----> {transformation_process_status}      entity info status ----> {entity_information_to_db_status}")
+    if transformation_process_status and entity_information_to_db_status:
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+        return 'transformation_and_loading_group.dag_result_success_task'
+    else:
+        dag_message = "Failed to perform transformation operations."
+        model_dictionary["dag_message"] = context['ti'].xcom_push(key="dag_message", value=dag_message)
+        model_dictionary["is_error_raised"] = True
+        context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)    
+        # model_dictionary["dag_status"] = context['ti'].xcom_push(key="dag_status", value="Failed")
+        return 'transformation_and_loading_group.transformation_failed_task'
+
+def transformation_failed_process(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the previous task status
+        3. Create and save Raw Records Information CSV file.
+        3. Raise exception based on the status.
+    Returns:
+        Exception (string). rasise Airflow exception.
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    model_dictionary["dag_start_at"] = context['ti'].xcom_pull(key="dag_start_at")
+    model_dictionary["dag_message"] = "Transformation process failed."
+    model_dictionary["dag_status"] = "Failed"
+    raw_records_information = getattr(q_bal(), \
+        "raw_records_information", \
+        "default_raw_records_information")(model_dictionary)
+    if model_dictionary["is_error_raised"]:
+        getattr(q_bal(),"error")(model_dictionary) 
+        model_dictionary["is_error_raised"] = False
+    context['ti'].xcom_push(key="model_dictionary", value=model_dictionary)
+    getattr(q_bal(),"error")(model_dictionary)    
+    raise AirflowFailException("error rises")
+
+def dag_result_success_process(**context):
+    """ Check the status of previous dags
+        Operations
+        1. Get the previous task status.
+        3. Create and save Raw Records Information CSV file.
+    Returns:
+        Status (bool). Status True or False.
+    """
+    task_id = context["task"].task_id
+    model_dictionary = context['ti'].xcom_pull(key="model_dictionary")
+    model_dictionary["task_id"] = task_id
+    model_dictionary["dag_start_at"] = context['ti'].xcom_pull(key="dag_start_at")
+    model_dictionary["dag_message"] = "Transformation process completed."
+    model_dictionary["dag_status"] = "Success"
+    raw_records_information = getattr(q_bal(), \
+        "raw_records_information", \
+        "default_raw_records_information")(model_dictionary)
+    return raw_records_information
+
+with DAG(
+    dag_id=f"{dag_name}",
+    schedule_interval='35 21 * * *',
+    default_args={
+        "owner": "{{client_name}}",
+        "retries": 1,
+        "retry_delay": timedelta(minutes=5),
+        "start_date": datetime(2022, 1, 1, tzinfo=local_tz)
+    },
+    catchup=False) as f:
+    
+    start_dag = PythonOperator(task_id='start',
+                               python_callable=model_dictionary_set_variables,
+                                provide_context = True,
+                                trigger_rule="one_success",
+                                op_kwargs= {"dag_id":f"{dag_name}"})
+   
+    end_dag = EmptyOperator(task_id='end',trigger_rule='all_done')
+    
+    error_task = PythonOperator(
+            task_id="error_task",
+            python_callable=error_log_process,
+            provide_context = True,
+            trigger_rule="one_success",
+            op_kwargs= {"dag_id":f"{dag_name}"}
+        )
+    
+    with TaskGroup(group_id="extraction_group") as extraction_group:
+        extraction_task = PythonOperator(
+            task_id='extraction_task',
+            python_callable=db_table_extraction,
+            provide_context=True,
+            op_kwargs= {"dag_id":f"{dag_name}"}
+        )
+        extraction_table_columns_task = PythonOperator(
+            task_id ="extraction_table_columns_task",
+            python_callable=extraction_table_columns,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"extraction_table_columns_task"}
+        )
+        extraction_table_records_attribute_status = BranchPythonOperator(task_id='extraction_table_records_attribute_status',
+                                  python_callable=check_status_extraction_tasks,
+                                  provide_context=True)
+        extraction_error_task = PythonOperator(
+            task_id="extraction_error_task",
+            python_callable=error_log_process,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"extraction_error_task"}
+        )
+        csv_to_date_table_task = PythonOperator(
+            task_id="csv_to_date_table_task",
+            python_callable=csv_to_date_table,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"csv_to_date_table"}
+        )
+        extraction_process_status = BranchPythonOperator(task_id='extraction_process_status',
+                                  python_callable=extraction_status_process,
+                                  trigger_rule='all_done',
+                                  provide_context=True)
+        [extraction_table_columns_task,extraction_task] >> extraction_table_records_attribute_status >> [csv_to_date_table_task, \
+            extraction_error_task] >> extraction_process_status
+        
+    with TaskGroup(group_id="transformation_and_loading_group") as transformation_group:
+        transformation_task =  BranchPythonOperator(
+            task_id="transformation_task",
+            python_callable=transformation_process,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}"}
+        )
+        transformation_error_task = PythonOperator(
+            task_id="transformation_error_task",
+            python_callable=error_log_process,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"transformation_error_task"}
+        )
+        entity_information_save = PythonOperator(
+            task_id="entity_information_save",
+            python_callable=entity_information_to_db,
+            provide_context=True,
+            op_kwargs= {"dag_id":f"{dag_name}"}
+        )
+        transformation_process_status_check = BranchPythonOperator(task_id='transformation_process_status_check',
+                                  python_callable=transformation_process_status_process,
+                                  trigger_rule='one_success',
+                                  provide_context=True)
+        transformation_failed_task = PythonOperator(
+            task_id="transformation_failed_task",
+            python_callable=transformation_failed_process,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"transformation_failed_task"}
+        )
+        dag_result_success_task = PythonOperator(
+            task_id="dag_result_success_task",
+            python_callable=dag_result_success_process,
+            provide_context = True,
+            op_kwargs= {"dag_id":f"{dag_name}","task_id":"dag_result_success_task"}
+        )
+        transformation_task >> [entity_information_save, transformation_error_task] >> transformation_process_status_check >>[transformation_failed_task,dag_result_success_task]
+        
+   
+    
+start_dag >> extraction_group >> [transformation_group, error_task] >> end_dag
+
+
+
+# start >> extraction_table_columns >> extraction_table_records >> dump_to_table_columns >> Dump_csv_to_dT
+# >> transformation_process >> save_todays_entry_to_report >> end

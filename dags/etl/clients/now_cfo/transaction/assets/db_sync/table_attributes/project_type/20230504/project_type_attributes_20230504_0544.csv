@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"project_type","Id","uniqueidentifier",""
+"project_type","IsDeleted","bit",""
+"project_type","Name","nvarchar","150.0"

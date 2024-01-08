@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"user_firebase","Id","uniqueidentifier",""
+"user_firebase","UserId","uniqueidentifier",""
+"user_firebase","FireBaseId","nvarchar","-1.0"
+"user_firebase","IsDeleted","bit",""

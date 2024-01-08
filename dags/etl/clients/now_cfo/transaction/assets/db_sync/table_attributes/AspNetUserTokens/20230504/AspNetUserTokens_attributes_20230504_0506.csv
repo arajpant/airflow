@@ -1,0 +1,5 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"AspNetUserTokens","UserId","uniqueidentifier",""
+"AspNetUserTokens","LoginProvider","nvarchar","450.0"
+"AspNetUserTokens","Name","nvarchar","450.0"
+"AspNetUserTokens","Value","nvarchar","-1.0"

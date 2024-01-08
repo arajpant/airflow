@@ -1,0 +1,6 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"account_engagement_billrate","Id","uniqueidentifier",""
+"account_engagement_billrate","IsDeleted","bit",""
+"account_engagement_billrate","TimeEntryCodeId","uniqueidentifier",""
+"account_engagement_billrate","Rate","decimal",""
+"account_engagement_billrate","ICRate","decimal",""

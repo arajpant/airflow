@@ -1,0 +1,8 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"SowHistory","Id","uniqueidentifier",""
+"SowHistory","SowId","uniqueidentifier",""
+"SowHistory","Content","nvarchar","-1.0"
+"SowHistory","ModifiedDate","datetime2",""
+"SowHistory","ModifiedBy","uniqueidentifier",""
+"SowHistory","HistoryType","int",""
+"SowHistory","Files","nvarchar","-1.0"

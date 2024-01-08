@@ -1,0 +1,4 @@
+"Entity_Name","Column_Name","Data_Type","Data_Type_Length"
+"recently_viewed_account","UserId","uniqueidentifier",""
+"recently_viewed_account","AccountId","uniqueidentifier",""
+"recently_viewed_account","ViewedDate","datetime2",""
