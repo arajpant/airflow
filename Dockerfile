@@ -1,4 +1,4 @@
-FROM apache/airflow:2.5.2
+FROM apache/airflow:2.8.0
 COPY . .
 COPY requirements.txt /requirements.txt
 RUN pip install --user --upgrade pip
